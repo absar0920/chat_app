@@ -14,6 +14,8 @@ import CustomChat from "./routes/customChat.jsx";
 import Landing_page from "./routes/landing_page.jsx";
 import Signup from "./routes/signup.jsx";
 
+import { CookiesProvider } from "react-cookie";
+
 import "./index.css";
 
 const socket = io("ws://localhost:8001");
@@ -21,11 +23,11 @@ const socket = io("ws://localhost:8001");
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landing_page />
+    element: <Landing_page />,
   },
   {
     path: "/signup",
-    element: <Signup />
+    element: <Signup />,
   },
   {
     path: "/worldchat",
@@ -41,10 +43,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/chat/:room",
-    element: <CustomChat socket={socket}/>,
+    element: <CustomChat socket={socket} />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  // <CookiesProvider>
+    <RouterProvider router={router} />
+  // {/* </CookiesProvider> */}
 );

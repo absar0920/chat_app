@@ -2,10 +2,33 @@ import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { NavLink } from "react-router-dom";
 
+import { useCookies } from "react-cookie";
+
 import "../styles/slide.css";
 
 function SlideFromLeft() {
   const [isVisible, setIsVisible] = useState(false);
+
+  const [cookies, setCookie, removeCookie] = useCookies(["name"]);
+  const name = cookies.name;
+
+  const handleLogoutClick = () => {
+    removeCookie("name", { path: "/" });
+    removeCookie("email", { path: "/" });
+    removeCookie("password", { path: "/" });
+
+    window.location.href = "/";
+  };
+
+  const gotoHome = () => {
+    return (
+      <div className="goToHome">
+        <NavLink to={"/"} className={"NavLinkForgoToHome"}>
+          <button className="goToHomeButton">Home</button>
+        </NavLink>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -40,41 +63,50 @@ function SlideFromLeft() {
       >
         <div className="slide-from-left">
           <div className="hamburgerDiv">
-            <div className="backLogo">
-              <button
-                onClick={() => {
-                  setIsVisible(!isVisible);
-                }}
-                className=""
-              >
-                <svg
-                  viewBox="0 0 12 12"
-                  enableBackground="new 0 0 12 12"
-                  id="Слой_1"
-                  version="1.1"
-                  xmlSpace="preserve"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  fill="#000000"
-                  transform="matrix(1, 0, 0, -1, 0, 0)"
+            <div className="navForHamBurger">
+              <div className="profile">{name ? `Hi ${name}` : gotoHome()}</div>
+              <div className="backLogo">
+                <button
+                  onClick={() => {
+                    setIsVisible(!isVisible);
+                  }}
+                  className=""
                 >
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <polygon
-                      fill="#1D1D1B"
-                      points="12,0.7070313 11.2929688,0 6,5.2929688 0.7070313,0 0,0.7070313 5.2929688,6 0,11.2929688 0.7070313,12 6,6.7070313 11.2929688,12 12,11.2929688 6.7070313,6 "
-                    ></polygon>
-                  </g>
-                </svg>
-              </button>
+                  <svg
+                    viewBox="0 0 12 12"
+                    enableBackground="new 0 0 12 12"
+                    id="Слой_1"
+                    version="1.1"
+                    xmlSpace="preserve"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    fill="#000000"
+                    transform="matrix(1, 0, 0, -1, 0, 0)"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <polygon
+                        fill="#1D1D1B"
+                        points="12,0.7070313 11.2929688,0 6,5.2929688 0.7070313,0 0,0.7070313 5.2929688,6 0,11.2929688 0.7070313,12 6,6.7070313 11.2929688,12 12,11.2929688 6.7070313,6 "
+                      ></polygon>
+                    </g>
+                  </svg>
+                </button>
+              </div>
             </div>
             <div className="worldChat">
-              <NavLink className={`worldChatBtn`} id={(e)=>{e.isActive ? "blue": "else"}}  to="/worldchat">
+              <NavLink
+                className={`worldChatBtn`}
+                id={(e) => {
+                  e.isActive ? "blue" : "else";
+                }}
+                to="/worldchat"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
@@ -110,7 +142,13 @@ function SlideFromLeft() {
               </NavLink>
             </div>
             <div className="joinARoom">
-              <NavLink  to="/join" className={`joinRoom`} id={(e)=>{e.isActive ? "blue": "else"}}>
+              <NavLink
+                to="/join"
+                className={`joinRoom`}
+                id={(e) => {
+                  e.isActive ? "blue" : "else";
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
@@ -130,7 +168,22 @@ function SlideFromLeft() {
               </NavLink>
             </div>
             <div className="createARoom">
-              <NavLink className={`createRoom`} to="/create" id={(e)=>{e.isActive ? "blue": "else"}}>Create A Room</NavLink>
+              <NavLink
+                className={`createRoom`}
+                to="/create"
+                id={(e) => {
+                  e.isActive ? "blue" : "else";
+                }}
+              >
+                Create A Room
+              </NavLink>
+            </div>
+            <div className="logoutDiv">
+              {name && (
+                <button className="logoutButton" onClick={handleLogoutClick}>
+                  LOG OUT
+                </button>
+              )}
             </div>
           </div>
         </div>

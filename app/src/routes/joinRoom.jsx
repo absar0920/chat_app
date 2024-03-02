@@ -17,7 +17,7 @@ const JoinRoom = () => {
   return (
     <>
       <div className="Navbar">
-        <SlideFromLeft />
+        <SlideFromLeft name={"Absar"}/>
       </div>
       <div className="main">
         <h1 className="createHeading">Join a Room</h1>

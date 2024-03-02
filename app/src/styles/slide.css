@@ -48,22 +48,35 @@
 .hamburgerDiv {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
   align-items: center;
 }
 .hamburgerDiv * {
-  margin: auto;
+  /* margin: auto; */
   text-align: center;
 }
 
-.hamburgerDiv > .backLogo {
-  justify-self: flex-end;
-  align-self: flex-end;
-  margin: 0%;
+.navForHamBurger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-.hamburgerDiv > .backLogo > button {
+.navForHamBurger > .profile {
+  padding-left: 20px;
+}
+
+.navForHamBurger > .backLogo {
+  /* justify-self: flex-end; */
+  /* align-self: flex-end; */
+  /* margin: 0%; */
+  margin-right: 2px;
+  margin-top: 2px;
+}
+
+.navForHamBurger > .backLogo > button {
   width: 40px;
   background-color: rgb(5, 143, 5);
   border: none;
@@ -71,7 +84,7 @@
   padding-right: 31px;
 }
 
-.hamburgerDiv > .backLogo > button > svg {
+.navForHamBurger > .backLogo > button > svg {
   width: 15px;
   height: 19px;
 }
