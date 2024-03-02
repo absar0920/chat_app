@@ -21,6 +21,7 @@ const Signup = () => {
     }
     setCookie("name", name, { path: "/" });
     email ? setCookie("email", email, { path: "/" }) : "";
+    setCookie("password", password, {path: "/"})
 
     window.location.href = "/worldchat";
   };
