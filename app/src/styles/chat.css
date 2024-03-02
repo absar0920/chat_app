@@ -1,0 +1,39 @@
+.ChatMessages {
+    /* overflow-y: auto; Enable vertical scrolling when messages overflow */
+    /* padding: 10px; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: calc(100vh - 60px);
+    height: 95vh;
+    width: calc(100vw - 30px);
+    color: white;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  
+  .messagesList {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0;
+    margin: 0;
+    width: calc(100% - 20px);
+  }
+  
+.mine {
+    background-color: rgb(2, 126, 2);
+    text-align: end;
+}
+
+  .messagesList li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  /* Style for alternate messages (e.g., different background color) */  
+  
+  /* Style for message text */
+  .messagesList li {
+    word-wrap: break-word; /* Wrap long messages */
+  }
+  

@@ -1,0 +1,47 @@
+
+
+.chatArea {
+  display: flex;
+  justify-content: space-between;
+  /* Arrange children with space between them */
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the start of the cross axis */
+  height: calc(100vh - 80px);
+  width: calc(100vw - 10px);
+  /* border: 2px solid green; */
+  color: black;
+}
+
+.navbar {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mainText {
+  font-size: 40px;
+  font-weight: bolder;
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Adjust spacing between chat components if needed */
+/* .chatArea > * {
+  margin-right: 20px;
+} */
+
+/* Style for the chat component */
+.chatArea .Chat {
+  flex: 1; /* Allow the chat component to grow and fill available space */
+}
+
+/* Style for the second message component */
+.chatArea .SecondMessage {
+  flex: 0 0 300px; /* Fixed width for the second message component */
+}
+
+.active {
+  background-color: rgb(5, 95, 95) !important;
+}

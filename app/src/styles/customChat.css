@@ -1,0 +1,27 @@
+.Navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 98%;
+  position: static;
+}
+
+.Navbar > .roomThing {
+  font-size: 20px;
+  text-wrap: wrap;
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.chatMessages {
+  /* max-height: calc(100vh - 60px); */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: calc(100vh - 115px) !important;
+  height: 90vh;
+  width: calc(100vw - 10px);
+  color: white;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}

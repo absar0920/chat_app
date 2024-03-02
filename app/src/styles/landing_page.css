@@ -1,0 +1,42 @@
+.navBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.textThing {
+  font-size: 20px;
+  text-wrap: wrap;
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.main {
+  /* width: auto; */
+  /* height: calc(100vh); */
+  background-color: rgb(101, 230, 90);
+  height: 80vh;
+}
+
+.main > .mainText {
+  display: flex;
+  flex-direction: column;
+  gap: 60%;
+  align-items: center;
+}
+
+.main > .mainText > .paraAboveButton {
+    width: 60%;
+}
+
+.textHeight {
+    line-height: 80px;
+    font-size: 200%;
+    color: red;
+}
+
+.paraAboveButton {
+  text-align: center;
+  font-size: 28px;
+}
