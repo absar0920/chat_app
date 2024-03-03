@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import SlideFromLeft from "../components/Slide";
 import { useParams } from "react-router";
+import { useCookies } from "react-cookie";
 
 import "../styles/customChat.css";
 
@@ -9,6 +10,15 @@ const CustomChat = ({ socket }) => {
   const [messages, setMessages] = useState([]);
   const scrollAbleDivRef = useRef(null);
 
+  const [cookies, setCookie, remove] = useCookies();
+
+  const emailFromCookies = cookies.email;
+  const passwordFromCookies = cookies.password;
+  if (!emailFromCookies || !passwordFromCookies) {
+    window.location.href = "/login";
+  }
+
+  const name = cookies.name;
   useEffect(() => {
     // Function to handle incoming messages
     const handleMessageForRoom = (message) => {
@@ -41,6 +51,8 @@ const CustomChat = ({ socket }) => {
     const inputMessage = document.querySelector("input").value;
     if (inputMessage) {
       socket.emit("chatMessageForRoom", {
+        name: name,
+        time: new Date(),
         room: params.room,
         id: socket.id,
         message: inputMessage,
@@ -51,7 +63,7 @@ const CustomChat = ({ socket }) => {
   };
 
   useEffect(() => {
-    socket.emit("joinRoom", params.room);
+    socket.emit("joinRoom", {room: params.room, email: emailFromCookies});
   }, [socket, params.room]);
 
   return (
@@ -70,7 +82,11 @@ const CustomChat = ({ socket }) => {
             console.log(trimmedMessage);
             return (
               <li key={index} className={className}>
-                {trimmedMessage}
+                <div className="message">{trimmedMessage}</div>
+                <div className="extraThings">
+                  <span className="name">by : {message.name}</span>
+                  <span className="date">{message.time}</span>
+                </div>
               </li>
             );
           })}

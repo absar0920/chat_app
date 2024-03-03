@@ -23,7 +23,7 @@ const Landing_page = () => {
             organized. Join us and experience the future of messaging.
           </p>
           <button className="getStartedButton">
-            <Link to={"/signup"}>Get Started</Link>
+            <Link to={"/signup"} className="linkTagForGetStarted">Get Started</Link>
           </button>
         </div>
       </div>

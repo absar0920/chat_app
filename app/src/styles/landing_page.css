@@ -27,16 +27,22 @@
 }
 
 .main > .mainText > .paraAboveButton {
-    width: 60%;
+  width: 60%;
 }
 
 .textHeight {
-    line-height: 80px;
-    font-size: 200%;
-    color: red;
+  line-height: 80px;
+  font-size: 200%;
+  color: red;
 }
 
 .paraAboveButton {
   text-align: center;
   font-size: 28px;
+}
+
+.linkTagForGetStarted {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
 }

@@ -25,3 +25,15 @@
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
+
+
+li > .message {
+  font-size: 20px;
+}
+
+li > .extraThings * {
+  font-size: 10px;
+  margin: 3px;
+  color: #0ce6c9
+}
+

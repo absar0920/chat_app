@@ -16,6 +16,7 @@ function SlideFromLeft() {
     removeCookie("name", { path: "/" });
     removeCookie("email", { path: "/" });
     removeCookie("password", { path: "/" });
+    removeCookie("rooms", {path: "/"})
 
     window.location.href = "/";
   };
@@ -23,8 +24,10 @@ function SlideFromLeft() {
   const gotoHome = () => {
     return (
       <div className="goToHome">
-        <NavLink to={"/"} className={"NavLinkForgoToHome"}>
-          <button className="goToHomeButton">Home</button>
+        <NavLink to={"/"} className={"NavLinkForgoToHome"} id="Hello">
+          <button id="buttonForGoToHome" className="goToHomeButton">
+            Home
+          </button>
         </NavLink>
       </div>
     );
@@ -33,6 +36,7 @@ function SlideFromLeft() {
   return (
     <div>
       <button
+        id="buttonForHamburgerButton"
         className="hamburgerOnButton"
         onClick={() => setIsVisible(!isVisible)}
       >
@@ -67,6 +71,7 @@ function SlideFromLeft() {
               <div className="profile">{name ? `Hi ${name}` : gotoHome()}</div>
               <div className="backLogo">
                 <button
+                  id="buttonForBacklogo"
                   onClick={() => {
                     setIsVisible(!isVisible);
                   }}
@@ -101,10 +106,11 @@ function SlideFromLeft() {
             </div>
             <div className="worldChat">
               <NavLink
-                className={`worldChatBtn`}
-                id={(e) => {
-                  e.isActive ? "blue" : "else";
-                }}
+                className={`worldChatBtn ${(e)=>e.isActive ? "blue": "else"}`}
+                // id={(e) => {
+                //   e.isActive ? "blue" : "else";
+                // }}
+                id="Hello1"
                 to="/worldchat"
               >
                 <svg
@@ -144,10 +150,11 @@ function SlideFromLeft() {
             <div className="joinARoom">
               <NavLink
                 to="/join"
-                className={`joinRoom`}
-                id={(e) => {
-                  e.isActive ? "blue" : "else";
-                }}
+                className={`joinRoom ${(e)=>e.isActive ? "blue": "else"}`}
+                // id={(e) => {
+                //   e.isActive ? "blue" : "else";
+                // }}
+                id="Hello2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -169,18 +176,23 @@ function SlideFromLeft() {
             </div>
             <div className="createARoom">
               <NavLink
-                className={`createRoom`}
+                className={`createRoom ${(e)=>e.isActive ? "blue": "else"}`}
                 to="/create"
-                id={(e) => {
-                  e.isActive ? "blue" : "else";
-                }}
+                // id={`${(e) => {
+                //   e.isActive ? "blue" : "else";
+                // }} hello`}
+                id="Hello3"
               >
                 Create A Room
               </NavLink>
             </div>
             <div className="logoutDiv">
               {name && (
-                <button className="logoutButton" onClick={handleLogoutClick}>
+                <button
+                  id="buttonForLogout"
+                  className="logoutButton"
+                  onClick={handleLogoutClick}
+                >
                   LOG OUT
                 </button>
               )}

@@ -13,6 +13,7 @@ import JoinRoom from "./routes/joinRoom.jsx";
 import CustomChat from "./routes/customChat.jsx";
 import Landing_page from "./routes/landing_page.jsx";
 import Signup from "./routes/signup.jsx";
+import Login from "./routes/login.jsx";
 
 import { CookiesProvider } from "react-cookie";
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Landing_page />,
+  },
+  {
+    path: "/login",
+    element: <Login />
   },
   {
     path: "/signup",
