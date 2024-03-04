@@ -63,9 +63,54 @@ const CustomChat = ({ socket }) => {
   };
 
   useEffect(() => {
-    socket.emit("joinRoom", {room: params.room, email: emailFromCookies});
+    socket.emit("joinRoom", { room: params.room, email: emailFromCookies });
   }, [socket, params.room]);
 
+  async function updateRoom() {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let body = {
+      email: emailFromCookies,
+      roomToJoin: params.room,
+    };
+
+    body = JSON.stringify(body);
+    let dataFromUpdateRoom;
+
+    const res = await fetch("http://localhost:8001/api/update_rooms", {
+      method: "POST",
+      headers: headers,
+      body: body,
+    });
+
+    dataFromUpdateRoom = await res.json();
+
+    if (dataFromUpdateRoom.status == 200) {
+      // console.log(
+      //   dataFromUpdateRoom,
+      //   dataFromUpdateRoom.details.rooms["0"],
+      //   dataFromUpdateRoom.details.rooms.length
+      // );
+      // console.log(
+      //   dataFromUpdateRoom.details.rooms,
+      //   typeof dataFromUpdateRoom.details.rooms.length
+      // );
+      
+      // const arrOfRooms = []
+      // for (let i = 0; i < dataFromUpdateRoom.details.rooms.length; i++) {
+      //   console.log(dataFromUpdateRoom.details.rooms[i]);
+      //   arrOfRooms.push(dataFromUpdateRoom.details.rooms[i])
+      // };
+      // console.log(arrOfRooms, typeof arrOfRooms)
+      const rooms = dataFromUpdateRoom.details.rooms.join("|")
+      setCookie("rooms", rooms)
+    } else {
+    }
+  }
+
+  updateRoom();
   return (
     <>
       <div className="Navbar">

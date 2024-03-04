@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
@@ -15,6 +15,7 @@ require("./db/connect");
 
 // Models:
 const Users = require("./models/signup");
+const User = require("./models/signup");
 
 io.on("connection", (socket) => {
   console.log("a user connected");
@@ -35,14 +36,23 @@ io.on("connection", (socket) => {
     console.log("Joined Room", data.room);
     socket.join(data.room);
 
-    const dataOfUserAboutRooms = await Users.findOne({ email: data.email });
-    const rooms = dataOfUserAboutRooms.rooms;
-    const isAlreadyHave = rooms.find((room) => room == data.room);
-    if (!isAlreadyHave) {
-      rooms.push(data.room)
-    }
-    console.log(dataOfUserAboutRooms);
+    // const dataOfUserAboutRooms = await Users.findOne({ email: data.email });
+    // // console.log(dataOfUserAboutRooms);
+    // const rooms = dataOfUserAboutRooms.rooms;
+    // const isAlreadyHave = rooms.find((room) => room == data.room);
+    // if (!isAlreadyHave) {
+    //   rooms.push(data.room);
+    //   await Users.findOneAndUpdate(
+    //     { email: data.email },
+    //     { $set: { rooms: rooms } },
+    //     { new: true }
+    //   );
+    // console.log(r)
+    // const dataOfUserAboutRoomss = await Users.findOne({ email: data.email });
+    // console.log(dataOfUserAboutRoomss);
   });
+  // console.log(dataOfUserAboutRooms);
+  // });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
@@ -129,6 +139,37 @@ app.post("/api/login", async (req, res) => {
         .status(301)
         .send({ status: 301, message: "Email or password is incorrect" });
     }
+  }
+});
+
+app.post("/api/update_rooms", async (req, res) => {
+  const { email, roomToJoin } = req.body;
+  console.log(email, roomToJoin);
+  const dataOfUserFromFind = await Users.findOne({ email: email });
+  console.log(dataOfUserFromFind);
+
+  if (!dataOfUserFromFind) {
+    return res.status(404).send({ status: 404, message: "Invalide Email" });
+  }
+
+  const isAlreadyHave = dataOfUserFromFind.rooms.find(
+    (room) => room == roomToJoin
+  );
+  if (!isAlreadyHave) {
+    const rooms = dataOfUserFromFind.rooms;
+    rooms.push(roomToJoin);
+    await Users.findOneAndUpdate(
+      { email: email },
+      { $set: { rooms: rooms } },
+      { new: true }
+    );
+    const details = await Users.findOne({email: email})
+    // console.log(details.rooms, "details")
+    return res
+      .status(200)
+      .send({ status: 200, message: "EveryThing Went Good" , details:details});
+  } else {
+    return res.status(303).send({ status: 303, message: "Already A member", });
   }
 });
 

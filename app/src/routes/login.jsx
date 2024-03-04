@@ -53,6 +53,9 @@ const Login = () => {
         setCookie("name", dataOfResponse.details.name, { path: "/" });
         setCookie("email", dataOfResponse.details.email, { path: "/" });
         setCookie("password", dataOfResponse.details.pasword, { path: "/" });
+        console.log(dataOfResponse.details.rooms.split(","))
+        alert("Hi")
+        console.log(dataOfResponse.details.rooms.split(","))
         setCookie("rooms", dataOfResponse.details.rooms, { path: "/" });
 
         window.location.href = "/worldchat";
