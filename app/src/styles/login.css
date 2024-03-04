@@ -1,0 +1,30 @@
+.navBar {
+  width: 98vw;
+}
+
+.mainLoginArea {
+  width: 100%;
+  text-align: center;
+}
+
+.mainLoginArea > .comingBackHeading {
+  /* text-align: center; */
+  font-size: 2.5rem;
+  /* color: greenyellow; */
+}
+
+
+.alreadyHaveAnAccount {
+    text-decoration: underline;
+    font-size: 20px;
+}
+
+
+.errorMessageDiv {
+    border: 2px dashed red;
+}
+
+.errorMessageDiv > .errorParas {
+    color: red;
+    font-size: 28px;
+}

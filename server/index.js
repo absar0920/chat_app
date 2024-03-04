@@ -18,7 +18,7 @@ const Users = require("./models/signup");
 const User = require("./models/signup");
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  // console.log("a user connected");
 
   socket.on("message", (message) => {
     console.log(message);
@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
 
   socket.on("joinRoom", async (data) => {
     console.log("Joined Room", data.room);
-    socket.join(data.room);
+    socket.join(data);
 
     // const dataOfUserAboutRooms = await Users.findOne({ email: data.email });
     // // console.log(dataOfUserAboutRooms);
@@ -66,6 +66,8 @@ app.use(bodyParser.json());
 app.post("/api/signup", async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
+    console.log(req.body);
+
     if (!fullName || !email || !password) {
       return res
         .status(404)
@@ -73,7 +75,7 @@ app.post("/api/signup", async (req, res) => {
     }
 
     const isAlreadyAUser = await Users.findOne({ email });
-    console.log(isAlreadyAUser);
+    // console.log(isAlreadyAUser);
     if (isAlreadyAUser) {
       return res
         .status(401)
@@ -163,13 +165,13 @@ app.post("/api/update_rooms", async (req, res) => {
       { $set: { rooms: rooms } },
       { new: true }
     );
-    const details = await Users.findOne({email: email})
+    const details = await Users.findOne({ email: email });
     // console.log(details.rooms, "details")
     return res
       .status(200)
-      .send({ status: 200, message: "EveryThing Went Good" , details:details});
+      .send({ status: 200, message: "EveryThing Went Good", details: details });
   } else {
-    return res.status(303).send({ status: 303, message: "Already A member", });
+    return res.status(303).send({ status: 303, message: "Already A member" });
   }
 });
 

@@ -19,7 +19,7 @@ function CreateRoom() {
   const handleClick = () => {
     if (document.querySelector("input").value) {
       // socket.emit("joinRoom", document.querySelector("input").value);
-      console.log(`/chat?room=${document.querySelector("input").value}`);
+      // console.log(`/chat?room=${document.querySelector("input").value}`);
       window.location.href = `/chat/${document.querySelector("input").value}`;
 
       // document.querySelector("input").value = "";

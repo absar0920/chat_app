@@ -4,6 +4,9 @@ import { useCookies } from "react-cookie";
 
 import SlideFromLeft from "../components/Slide";
 
+import "../styles/signup.css"
+
+
 const Signup = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["name"]);
@@ -54,7 +57,6 @@ const Signup = () => {
         setCookie("name", name, { path: "/" });
         email ? setCookie("email", email, { path: "/" }) : "";
         setCookie("password", password, { path: "/" });
-        setCookie("rooms", []);
 
         window.location.href = "/worldchat";
       } else if (dataOfResponse.status == 404) {
@@ -130,7 +132,7 @@ const Signup = () => {
           </div>
           <div className="submitDiv">
             <input type="submit" value="Sign Up" onClick={handleSignUpSubmit} />
-            <Link to={"/login"}>Already Have an account </Link>
+            <Link to={"/login"} className="alreadyHaveAnAccount">Already Have an account </Link>
             {/* <button className="loginasAnonymousUser">
               Login As Anonymous User
             </button> */}

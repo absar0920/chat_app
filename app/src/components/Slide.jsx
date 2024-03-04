@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { useCookies } from "react-cookie";
 
@@ -8,15 +8,18 @@ import "../styles/slide.css";
 
 function SlideFromLeft() {
   const [isVisible, setIsVisible] = useState(false);
+  // const [roomsFromCookies, setRoomsFromCookies] = useState([]);
 
   const [cookies, setCookie, removeCookie] = useCookies(["name"]);
   const name = cookies.name;
+  let rooms = cookies.rooms;
+  let roomArray = String(rooms).split("|");
 
   const handleLogoutClick = () => {
     removeCookie("name", { path: "/" });
     removeCookie("email", { path: "/" });
     removeCookie("password", { path: "/" });
-    removeCookie("rooms", {path: "/"})
+    removeCookie("rooms", { path: "/" });
 
     window.location.href = "/";
   };
@@ -27,6 +30,21 @@ function SlideFromLeft() {
         <NavLink to={"/"} className={"NavLinkForgoToHome"} id="Hello">
           <button id="buttonForGoToHome" className="goToHomeButton">
             Home
+          </button>
+        </NavLink>
+      </div>
+    );
+  };
+
+  const goToHomeWithName = (name) => {
+    return (
+      <div className="goToHomeWithName">
+        <NavLink to={"/"} className={"NavLinkForgoToHomeWithName"} id="Hello">
+          <button
+            id="buttonForGoToHomeWithName"
+            className="goToHomeButtonWithName"
+          >
+            Hi {name}
           </button>
         </NavLink>
       </div>
@@ -68,7 +86,9 @@ function SlideFromLeft() {
         <div className="slide-from-left">
           <div className="hamburgerDiv">
             <div className="navForHamBurger">
-              <div className="profile">{name ? `Hi ${name}` : gotoHome()}</div>
+              <div className="profile">
+                {name ? goToHomeWithName(name) : gotoHome()}
+              </div>
               <div className="backLogo">
                 <button
                   id="buttonForBacklogo"
@@ -106,7 +126,8 @@ function SlideFromLeft() {
             </div>
             <div className="worldChat">
               <NavLink
-                className={`worldChatBtn ${(e)=>e.isActive ? "blue": "else"}`}
+                className={`worldChatBtn ${(e) =>
+                  e.isActive ? "blue" : "else"}`}
                 // id={(e) => {
                 //   e.isActive ? "blue" : "else";
                 // }}
@@ -150,7 +171,7 @@ function SlideFromLeft() {
             <div className="joinARoom">
               <NavLink
                 to="/join"
-                className={`joinRoom ${(e)=>e.isActive ? "blue": "else"}`}
+                className={`joinRoom ${(e) => (e.isActive ? "blue" : "else")}`}
                 // id={(e) => {
                 //   e.isActive ? "blue" : "else";
                 // }}
@@ -176,7 +197,8 @@ function SlideFromLeft() {
             </div>
             <div className="createARoom">
               <NavLink
-                className={`createRoom ${(e)=>e.isActive ? "blue": "else"}`}
+                className={`createRoom ${(e) =>
+                  e.isActive ? "blue" : "else"}`}
                 to="/create"
                 // id={`${(e) => {
                 //   e.isActive ? "blue" : "else";
@@ -196,6 +218,19 @@ function SlideFromLeft() {
                   LOG OUT
                 </button>
               )}
+            </div>
+            <div className="roomsDiv">
+              {window.location.href.includes("/chat") &&
+                roomArray.length >= 1 && (
+                  <div className="headingForRooms">
+                    Your Rooms:
+                    {roomArray.map((room) => (
+                      <button key={room} className="room">
+                        <Link to={`/chat/${room}`}>{room}</Link>
+                      </button>
+                    ))}
+                  </div>
+                )}
             </div>
           </div>
         </div>

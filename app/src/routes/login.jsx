@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import SlideFromLeft from "../components/Slide";
 
+import "../styles/login.css"
+
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -50,13 +52,14 @@ const Login = () => {
       const dataOfResponse = await res.json();
 
       if (dataOfResponse.status == 200) {
+        const rooms = dataOfResponse.details.rooms
+        const roomString = rooms.join("|")
+        // console.log(roomString)
+        // alert("Hi")
         setCookie("name", dataOfResponse.details.name, { path: "/" });
         setCookie("email", dataOfResponse.details.email, { path: "/" });
         setCookie("password", dataOfResponse.details.pasword, { path: "/" });
-        console.log(dataOfResponse.details.rooms.split(","))
-        alert("Hi")
-        console.log(dataOfResponse.details.rooms.split(","))
-        setCookie("rooms", dataOfResponse.details.rooms, { path: "/" });
+        setCookie("rooms", roomString, { path: "/chat" });
 
         window.location.href = "/worldchat";
       } else if (dataOfResponse.status == 404) {
@@ -81,7 +84,7 @@ const Login = () => {
         <SlideFromLeft />
       </div>
       <div className="mainLoginArea">
-        <h3 className="getStartedHeading">Coming Back......</h3>
+        <h3 className="comingBackHeading">Coming Back......</h3>
         <form
           className="formForLogin"
           onSubmit={(e) => {
@@ -112,7 +115,7 @@ const Login = () => {
           </div>
           <div className="submitDiv">
             <input type="submit" value="Login" onClick={handleLoginSubmit} />
-            <Link to={"/signup"}> don't have an account? Sign up</Link>
+            <Link to={"/signup"} className="alreadyHaveAnAccount"> don't have an account? Sign up</Link>
           </div>
           <div className="errorMessageDiv">
             {errorMessage && <p className="errorPara">{errorMessage}</p>}

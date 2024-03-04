@@ -17,7 +17,7 @@ const JoinRoom = () => {
   const handleClick = () => {
     if (document.querySelector("input").value) {
       //   socket.emit("joinRoom", document.querySelector("input").value);
-      alert(`/chat/${document.querySelector("input").value}`);
+      // alert(`/chat/${document.querySelector("input").value}`);
       window.location.href = `/chat/${document.querySelector("input").value}`;
 
       // document.querySelector("input").value = "";

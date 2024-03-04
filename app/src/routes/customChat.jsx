@@ -22,22 +22,22 @@ const CustomChat = ({ socket }) => {
   useEffect(() => {
     // Function to handle incoming messages
     const handleMessageForRoom = (message) => {
-      console.log(message, "m");
+      // console.log(message, "m");
       setMessages((prevMessages) => [...prevMessages, message]);
     };
 
     // Attach event listener for incoming messages
     socket.on("messageForRoom", (message) => {
-      console.log("Getting");
+      // console.log("Getting");
 
       handleMessageForRoom(message);
-      console.log(messages);
+      // console.log(messages);
     });
 
     // Clean-up function to remove event listener when component unmounts
     return () => {
       //   socket.off("messageForRoom", handleMessageForRoom);
-      console.log("Returning");
+      // console.log("Returning");
     };
   }, [socket]);
 
@@ -57,7 +57,7 @@ const CustomChat = ({ socket }) => {
         id: socket.id,
         message: inputMessage,
       });
-      console.log(params.room, socket.id, inputMessage);
+      // console.log(params.room, socket.id, inputMessage);
       document.querySelector("input").value = "";
     }
   };
@@ -97,16 +97,18 @@ const CustomChat = ({ socket }) => {
       //   dataFromUpdateRoom.details.rooms,
       //   typeof dataFromUpdateRoom.details.rooms.length
       // );
-      
+
       // const arrOfRooms = []
       // for (let i = 0; i < dataFromUpdateRoom.details.rooms.length; i++) {
       //   console.log(dataFromUpdateRoom.details.rooms[i]);
       //   arrOfRooms.push(dataFromUpdateRoom.details.rooms[i])
       // };
       // console.log(arrOfRooms, typeof arrOfRooms)
-      const rooms = dataFromUpdateRoom.details.rooms.join("|")
-      setCookie("rooms", rooms)
-    } else {
+      let rooms = dataFromUpdateRoom.details.rooms;
+      // console.log(rooms, typeof rooms);
+      rooms = rooms.join("|");
+      setCookie("rooms", rooms, { path: "/chat" });
+      // console.log(cookies.rooms)
     }
   }
 
@@ -124,7 +126,7 @@ const CustomChat = ({ socket }) => {
             const isMine = message.id === socket.id;
             const className = isMine ? "mine" : "";
             const trimmedMessage = message.message;
-            console.log(trimmedMessage);
+            // console.log(trimmedMessage);
             return (
               <li key={index} className={className}>
                 <div className="message">{trimmedMessage}</div>
