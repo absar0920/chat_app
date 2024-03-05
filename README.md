@@ -6,7 +6,8 @@ This is a real-time chat application developed using React for the frontend, Web
 
 - Real-time chat functionality
 - User authentication and authorization
-- Persistent storage of chat messages and user data
+- User signup and login features
+- Private chats using rooms
 
 ## Technologies Used
 
@@ -30,6 +31,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - absar0920@gmail.com
+Your Name - absar0920@proton.me
 
 Project Link: [https://github.com/absar0920/chat_app](https://github.com/absar0920/chat_app)
+
