@@ -2,46 +2,39 @@ import React, { useEffect, useRef, useState } from "react";
 import SlideFromLeft from "../components/Slide";
 import { useParams } from "react-router";
 import { useCookies } from "react-cookie";
-
 import "../styles/customChat.css";
 
 const CustomChat = ({ socket }) => {
   const params = useParams();
   const [messages, setMessages] = useState([]);
   const scrollAbleDivRef = useRef(null);
-
-  const [cookies, setCookie, remove] = useCookies();
-
+  const [cookies, setCookie] = useCookies();
   const emailFromCookies = cookies.email;
   const passwordFromCookies = cookies.password;
+
+  // Redirect to login page if email or password is missing
   if (!emailFromCookies || !passwordFromCookies) {
     window.location.href = "/login";
   }
 
   const name = cookies.name;
+
   useEffect(() => {
     // Function to handle incoming messages
     const handleMessageForRoom = (message) => {
-      if (params.room == message.room) {
-        console.log(message, "m");
+      if (params.room === message.room) {
         setMessages((prevMessages) => [...prevMessages, message]);
       }
     };
 
     // Attach event listener for incoming messages
-    socket.on("messageForRoom", (message) => {
-      console.log("Getting");
-
-      console.log(message);
-      handleMessageForRoom(message);
-    });
+    socket.on("messageForRoom", handleMessageForRoom);
 
     // Clean-up function to remove event listener when component unmounts
     return () => {
-      //   socket.off("messageForRoom", handleMessageForRoom);
-      // console.log("Returning");
+      socket.off("messageForRoom", handleMessageForRoom);
     };
-  }, [socket]);
+  }, [socket, params.room]);
 
   // Scroll to the bottom of the chat window
   useEffect(() => {
@@ -49,6 +42,7 @@ const CustomChat = ({ socket }) => {
     chatDiv.scrollTop = chatDiv.scrollHeight;
   });
 
+  // Function to handle sending a message
   const handleClick = () => {
     const inputMessage = document.querySelector("input").value;
     if (inputMessage) {
@@ -59,15 +53,16 @@ const CustomChat = ({ socket }) => {
         id: socket.id,
         message: inputMessage,
       });
-      // console.log(params.room, socket.id, inputMessage);
       document.querySelector("input").value = "";
     }
   };
 
   useEffect(() => {
+    // Emit 'joinRoom' event when component mounts to join the specified room
     socket.emit("joinRoom", { room: params.room, email: emailFromCookies });
   }, [socket, params.room]);
 
+  // Function to update the rooms list in cookies
   async function updateRoom() {
     const headers = {
       "Content-Type": "application/json",
@@ -79,7 +74,6 @@ const CustomChat = ({ socket }) => {
     };
 
     body = JSON.stringify(body);
-    let dataFromUpdateRoom;
 
     const res = await fetch("http://localhost:8001/api/update_rooms", {
       method: "POST",
@@ -87,53 +81,38 @@ const CustomChat = ({ socket }) => {
       body: body,
     });
 
-    dataFromUpdateRoom = await res.json();
+    const dataFromUpdateRoom = await res.json();
 
-    if (dataFromUpdateRoom.status == 200) {
-      // console.log(
-      //   dataFromUpdateRoom,
-      //   dataFromUpdateRoom.details.rooms["0"],
-      //   dataFromUpdateRoom.details.rooms.length
-      // );
-      // console.log(
-      //   dataFromUpdateRoom.details.rooms,
-      //   typeof dataFromUpdateRoom.details.rooms.length
-      // );
-
-      // const arrOfRooms = []
-      // for (let i = 0; i < dataFromUpdateRoom.details.rooms.length; i++) {
-      //   console.log(dataFromUpdateRoom.details.rooms[i]);
-      //   arrOfRooms.push(dataFromUpdateRoom.details.rooms[i])
-      // };
-      // console.log(arrOfRooms, typeof arrOfRooms)
+    if (dataFromUpdateRoom.status === 200) {
       let rooms = dataFromUpdateRoom.details.rooms;
-      // console.log(rooms, typeof rooms);
       rooms = rooms.join("|");
       setCookie("rooms", rooms, { path: "/chat" });
-      // console.log(cookies.rooms)
     }
   }
 
+  // Call the updateRoom function
   updateRoom();
+
   return (
     <>
+      {/* Navbar component */}
       <div className="Navbar">
         <SlideFromLeft />
-        <div className="roomThing">Room Joined : {params.room}</div>
+        <div className="roomThing">Room Joined: {params.room}</div>
       </div>
 
+      {/* Chat messages */}
       <div className="ChatMessages" ref={scrollAbleDivRef}>
         <ul className="messagesList">
           {messages.map((message, index) => {
             const isMine = message.id === socket.id;
             const className = isMine ? "mine" : "";
             const trimmedMessage = message.message;
-            // console.log(trimmedMessage);
             return (
               <li key={index} className={className}>
                 <div className="message">{trimmedMessage}</div>
                 <div className="extraThings">
-                  <span className="name">by : {message.name}</span>
+                  <span className="name">by: {message.name}</span>
                   <span className="date">{message.time}</span>
                 </div>
               </li>
@@ -141,6 +120,8 @@ const CustomChat = ({ socket }) => {
           })}
         </ul>
       </div>
+
+      {/* Input form for sending messages */}
       <form
         onSubmit={(e) => {
           e.preventDefault();

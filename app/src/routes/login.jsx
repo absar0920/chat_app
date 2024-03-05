@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import SlideFromLeft from "../components/Slide";
 
-import "../styles/login.css"
+import "../styles/login.css";
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -51,29 +51,18 @@ const Login = () => {
       });
       const dataOfResponse = await res.json();
 
-      if (dataOfResponse.status == 200) {
-        const rooms = dataOfResponse.details.rooms
-        const roomString = rooms.join("|")
-        // console.log(roomString)
-        // alert("Hi")
+      if (dataOfResponse.status === 200) {
+        const rooms = dataOfResponse.details.rooms;
+        const roomString = rooms.join("|");
         setCookie("name", dataOfResponse.details.name, { path: "/" });
         setCookie("email", dataOfResponse.details.email, { path: "/" });
-        setCookie("password", dataOfResponse.details.pasword, { path: "/" });
+        setCookie("password", dataOfResponse.details.password, { path: "/" });
         setCookie("rooms", roomString, { path: "/chat" });
-
         window.location.href = "/worldchat";
-      } else if (dataOfResponse.status == 404) {
-        return setErrorMessage(dataOfResponse.message);
-      } else if (dataOfResponse.status == 401) {
+      } else {
         document.querySelector("#email").value = "";
         document.querySelector("#password").value = "";
-
-        return setErrorMessage(dataOfResponse.message);
-      } else if (dataOfResponse.status == 301) {
-        document.querySelector("#email").value = "";
-        document.querySelector("#password").value = "";
-
-        return setErrorMessage(dataOfResponse.message);
+        setErrorMessage(dataOfResponse.message);
       }
     }
   };
@@ -114,8 +103,14 @@ const Login = () => {
             </label>
           </div>
           <div className="submitDiv">
-            <input type="submit" value="Login" onClick={handleLoginSubmit} />
-            <Link to={"/signup"} className="alreadyHaveAnAccount"> don't have an account? Sign up</Link>
+            <input
+              type="submit"
+              value="Login"
+              onClick={handleLoginSubmit}
+            />
+            <Link to={"/signup"} className="alreadyHaveAnAccount">
+              don't have an account? Sign up
+            </Link>
           </div>
           <div className="errorMessageDiv">
             {errorMessage && <p className="errorPara">{errorMessage}</p>}

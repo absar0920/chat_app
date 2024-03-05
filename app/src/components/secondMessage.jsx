@@ -4,28 +4,24 @@ import "../styles/sendMessage.css";
 
 import { useCookies } from "react-cookie";
 
-
-
 const SecondMessage = ({ socket }) => {
-  // const [inputValue, setInputValue] = useState("");
   const [cookies] = useCookies();
-
   const name = cookies.name;
 
-
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
   const handleClick = () => {
-    if (document.querySelector("input").value) {
+    // Retrieve input value
+    const inputValue = document.querySelector("input").value;
+    
+    if (inputValue) {
+      // Emit message to the server
       socket.emit("message", {
         name: name,
         time: new Date(),
         id: socket.id,
-        message: document.querySelector("input").value,
+        message: inputValue,
       });
+      
+      // Clear input field
       document.querySelector("input").value = "";
     }
   };

@@ -1,34 +1,33 @@
 import React from "react";
 import SlideFromLeft from "../components/Slide";
-
-import "../styles/createRoom.css";
 import { useCookies } from "react-cookie";
+import "../styles/createRoom.css"
 
 const JoinRoom = () => {
   const [cookies] = useCookies();
-
   const name = cookies.name;
   const password = cookies.password;
 
+  // Redirect to login page if name or password is missing
   if (!name || !password) {
     window.location.href = "/login";
   }
 
+  // Function to handle joining a room
   const handleClick = () => {
-    if (document.querySelector("input").value) {
-      //   socket.emit("joinRoom", document.querySelector("input").value);
-      // alert(`/chat/${document.querySelector("input").value}`);
-      window.location.href = `/chat/${document.querySelector("input").value}`;
-
-      // document.querySelector("input").value = "";
+    const inputValue = document.querySelector("input").value;
+    if (inputValue) {
+      window.location.href = `/chat/${inputValue}`;
     }
   };
 
   return (
     <>
+      {/* Navbar component */}
       <div className="Navbar">
         <SlideFromLeft />
       </div>
+      {/* Main content */}
       <div className="main">
         <h1 className="createHeading">Join a Room</h1>
         <div className="form cllector">

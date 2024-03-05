@@ -1,7 +1,6 @@
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
-// const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
@@ -15,54 +14,34 @@ require("./db/connect");
 
 // Models:
 const Users = require("./models/signup");
-const User = require("./models/signup");
 
+// Socket.io event handling for real-time communication
 io.on("connection", (socket) => {
-  // console.log("a user connected");
+  // Socket events for real-time communication
 
   socket.on("message", (message) => {
+    // Log received message
     console.log(message);
     // Emit the received message back to all connected clients
     io.sockets.emit("message", message);
   });
 
   socket.on("chatMessageForRoom", (data) => {
-    // console.log(data);
+    console.log(data)
     // Emit the message to all clients in the specified room
-    socket.emit("messageForRoom", data);
+    io.emit("messageForRoom", data);
   });
-
-  socket.on("joinRoom", async (data) => {
-    console.log("Joined Room", data.room);
-    socket.join(data);
-
-    // const dataOfUserAboutRooms = await Users.findOne({ email: data.email });
-    // // console.log(dataOfUserAboutRooms);
-    // const rooms = dataOfUserAboutRooms.rooms;
-    // const isAlreadyHave = rooms.find((room) => room == data.room);
-    // if (!isAlreadyHave) {
-    //   rooms.push(data.room);
-    //   await Users.findOneAndUpdate(
-    //     { email: data.email },
-    //     { $set: { rooms: rooms } },
-    //     { new: true }
-    //   );
-    // console.log(r)
-    // const dataOfUserAboutRoomss = await Users.findOne({ email: data.email });
-    // console.log(dataOfUserAboutRoomss);
-  });
-  // console.log(dataOfUserAboutRooms);
-  // });
 
   socket.on("disconnect", () => {
+    // Handle user disconnection
     console.log("User disconnected");
-    // You may want to handle removing the user from any rooms they were in
   });
 });
 
 app.use(cors());
 app.use(bodyParser.json());
 
+// User signup endpoint
 app.post("/api/signup", async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
@@ -75,7 +54,6 @@ app.post("/api/signup", async (req, res) => {
     }
 
     const isAlreadyAUser = await Users.findOne({ email });
-    // console.log(isAlreadyAUser);
     if (isAlreadyAUser) {
       return res
         .status(401)
@@ -96,16 +74,17 @@ app.post("/api/signup", async (req, res) => {
       console.log("Error", err);
       return res
         .status(501)
-        .send({ status: 501, message: "An Internal Error Occured." });
+        .send({ status: 501, message: "An Internal Error Occurred." });
     }
   } catch (error) {
     console.log("Error At signup", error);
     return res
       .status(504)
-      .send({ status: 504, message: "An Internal Error Occured." });
+      .send({ status: 504, message: "An Internal Error Occurred." });
   }
 });
 
+// User login endpoint
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
@@ -144,6 +123,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+// Update user's rooms endpoint
 app.post("/api/update_rooms", async (req, res) => {
   const { email, roomToJoin } = req.body;
   console.log(email, roomToJoin);
@@ -151,7 +131,7 @@ app.post("/api/update_rooms", async (req, res) => {
   console.log(dataOfUserFromFind);
 
   if (!dataOfUserFromFind) {
-    return res.status(404).send({ status: 404, message: "Invalide Email" });
+    return res.status(404).send({ status: 404, message: "Invalid Email" });
   }
 
   const isAlreadyHave = dataOfUserFromFind.rooms.find(
@@ -166,10 +146,9 @@ app.post("/api/update_rooms", async (req, res) => {
       { new: true }
     );
     const details = await Users.findOne({ email: email });
-    // console.log(details.rooms, "details")
     return res
       .status(200)
-      .send({ status: 200, message: "EveryThing Went Good", details: details });
+      .send({ status: 200, message: "Everything Went Good", details: details });
   } else {
     return res.status(303).send({ status: 303, message: "Already A member" });
   }

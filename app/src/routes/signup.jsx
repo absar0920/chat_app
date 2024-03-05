@@ -4,25 +4,29 @@ import { useCookies } from "react-cookie";
 
 import SlideFromLeft from "../components/Slide";
 
-import "../styles/signup.css"
-
+import "../styles/signup.css";
 
 const Signup = () => {
+  // State to hold error message
   const [errorMessage, setErrorMessage] = useState(null);
+
+  // Hook to access cookies
   const [cookies, setCookie, removeCookie] = useCookies(["name"]);
 
+  // Function to validate email format
   function validateEmail(email) {
     const regex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return regex.test(email);
   }
 
+  // Check if user is already logged in, if so, redirect to chat
   const emailFromCookies = cookies.email;
   const passwordFromCookies = cookies.password;
-
   if (emailFromCookies && passwordFromCookies) {
     window.location.href = "/worldchat";
   }
 
+  // Handle form submission
   const handleSignUpSubmit = async () => {
     if (
       document.querySelector("#name").value &&
@@ -37,9 +41,9 @@ const Signup = () => {
       }
 
       const data = {
-        fullName: document.querySelector("#name").value,
-        email: document.querySelector("#email").value,
-        password: document.querySelector("#password").value,
+        fullName: name, // Corrected key to match server expectation
+        email: email,
+        password: password,
       };
 
       const body = JSON.stringify(data);
@@ -53,37 +57,22 @@ const Signup = () => {
       });
       const dataOfResponse = await res.json();
 
-      if (dataOfResponse.status == 200) {
+      if (dataOfResponse.status === 200) {
+        // Set cookies on successful signup
         setCookie("name", name, { path: "/" });
-        email ? setCookie("email", email, { path: "/" }) : "";
+        setCookie("email", email, { path: "/" });
         setCookie("password", password, { path: "/" });
-
         window.location.href = "/worldchat";
-      } else if (dataOfResponse.status == 404) {
-        return setErrorMessage(dataOfResponse.message);
-      } else if (dataOfResponse.status == 401) {
-        document.querySelector("#name").value = "";
-        document.querySelector("#email").value = "";
-        document.querySelector("#password").value = "";
-
-        return setErrorMessage(dataOfResponse.message);
-      } else if (dataOfResponse.status == 501) {
-        document.querySelector("#name").value = "";
-        document.querySelector("#email").value = "";
-        document.querySelector("#password").value = "";
-
-        return setErrorMessage(dataOfResponse.message);
-      } else if (dataOfResponse == 501 || dataOfResponse == 504) {
-        return setErrorMessage(
-          `${dataOfResponse.message} Please Try Again After Some Time`
-        );
       } else {
-        return setErrorMessage(
-          `An Internal Error Occured. Please Try again later.`
-        );
+        // Clear input fields and display error message on failure
+        document.querySelector("#name").value = "";
+        document.querySelector("#email").value = "";
+        document.querySelector("#password").value = "";
+        setErrorMessage(dataOfResponse.message);
       }
     }
   };
+
   return (
     <>
       <div className="navBar">
@@ -131,11 +120,14 @@ const Signup = () => {
             </label>
           </div>
           <div className="submitDiv">
-            <input type="submit" value="Sign Up" onClick={handleSignUpSubmit} />
-            <Link to={"/login"} className="alreadyHaveAnAccount">Already Have an account </Link>
-            {/* <button className="loginasAnonymousUser">
-              Login As Anonymous User
-            </button> */}
+            <input
+              type="submit"
+              value="Sign Up"
+              onClick={handleSignUpSubmit}
+            />
+            <Link to={"/login"} className="alreadyHaveAnAccount">
+              Already Have an account
+            </Link>
           </div>
           <div className="errorDiv">
             {errorMessage && <p className="paraOfError">{errorMessage}</p>}

@@ -5,22 +5,24 @@ import "../styles/chat.css";
 import { useCookies } from "react-cookie";
 
 function Chat({ socket }) {
+  // State for storing messages
   const [messages, setMessages] = useState([]);
 
+  // Get user's name from cookies
   const [cookies] = useCookies();
-
   const name = cookies.name;
 
+  // Reference for scrolling to bottom of chat
   const scrollAbleDivRef = useRef(null);
 
+  // Scroll to bottom of chat when messages change
   useEffect(() => {
     const chatDiv = scrollAbleDivRef.current;
     chatDiv.scrollTop = chatDiv.scrollHeight;
   });
 
+  // Effect to establish socket connection and listen for incoming messages
   useEffect(() => {
-    // Establish socket connection when component mounts
-
     // Listen for incoming messages from the server
     socket.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -44,12 +46,13 @@ function Chat({ socket }) {
 
           // Remove the socket ID from the message
           const trimmedMessage = message.message;
-          console.log(trimmedMessage);
+
           return (
             <li key={index} className={className}>
               <div className="message">{trimmedMessage}</div>
               <div className="extraThings">
-                <span className="name">by : {(message.name) ? message.name: "unknown"}</span>
+                {/* Display sender's name and message time */}
+                <span className="name">by: {(message.name) ? message.name : "unknown"}</span>
                 <span className="date">{message.time}</span>
               </div>
             </li>
