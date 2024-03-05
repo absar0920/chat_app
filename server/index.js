@@ -27,9 +27,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("chatMessageForRoom", (data) => {
-    console.log(data);
+    // console.log(data);
     // Emit the message to all clients in the specified room
-    io.to(data.room).emit("messageForRoom", data);
+    socket.emit("messageForRoom", data);
   });
 
   socket.on("joinRoom", async (data) => {

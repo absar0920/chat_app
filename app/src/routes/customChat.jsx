@@ -22,16 +22,18 @@ const CustomChat = ({ socket }) => {
   useEffect(() => {
     // Function to handle incoming messages
     const handleMessageForRoom = (message) => {
-      // console.log(message, "m");
-      setMessages((prevMessages) => [...prevMessages, message]);
+      if (params.room == message.room) {
+        console.log(message, "m");
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
     };
 
     // Attach event listener for incoming messages
     socket.on("messageForRoom", (message) => {
-      // console.log("Getting");
+      console.log("Getting");
 
+      console.log(message);
       handleMessageForRoom(message);
-      // console.log(messages);
     });
 
     // Clean-up function to remove event listener when component unmounts
